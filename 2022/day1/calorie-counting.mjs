@@ -38,17 +38,15 @@ const getObjectsFromFile = (file) => {
 
 }
 const elves = getObjectsFromFile(inputFile)
-const getMostCaloriesForTopX = (elves, x) => {
-    
-    const reducedSortedElves = elves.map((elf, i) => elf.reduce((acc, cur) => acc + cur)).sort((a, b) => a - b)
-    const topXArray = [];
-    for (x; x > 0; x--) {
-       topXArray.push(reducedSortedElves.pop()) 
-    } 
-    console.log(topXArray)
-    return topXArray.reduce((acc, cur) => acc + cur)
+const getMostRecursive = ({elves, topElf = 0, i}) => {
+    if (i === 0) return topElf
+    if (Array.isArray(elves[0])) {
+        elves = elves.map((elf, i) => elf.reduce((acc, cur) => acc + cur)).sort((a, b) => a - b)
+    }
+    topElf += elves.pop()
+    i--
+    return getMostRecursive({elves:elves, topElf, i})
 }
-console.log(getMostCaloriesForTopX(elves, 3))
 
 
 /**
@@ -56,10 +54,4 @@ console.log(getMostCaloriesForTopX(elves, 3))
  * Get the sum of the top 3 most calories carried
  *
  */
-//const reducedElves = getMostCalories(elves)
-//const sortedElves = reducedElves.sort((a, b) => a - b) 
-//const top3 = [sortedElves.pop(), sortedElves.pop(), sortedElves.pop()].reduce((acc, cur) => acc + cur)
-//
-//console.log(top3)
-
-
+console.log(getMostRecursive({elves: elves, i: 3 }))
