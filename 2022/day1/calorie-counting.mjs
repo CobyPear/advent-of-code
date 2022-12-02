@@ -27,22 +27,39 @@ Find the Elf carrying the most
 */
 import fs from 'fs'
 import path from 'path'
-const getMostCalories = () => {
-    const inputFile = ('day1.input.txt')
-    const getObjectsFromFile = (file) => {
-        const rawFile = fs.readFileSync(file, 'utf8')
-        const elfData = rawFile.split('\n\n')
-        let elves = elfData.map(elf => elf.split('\n')).map(elf => elf.map(e => Number(e)))
-        return elves
 
-    }
-    const elves = getObjectsFromFile(inputFile)
-    let count = 0
-    const result = elves.forEach(elf => {
-        const calories = elf.reduce((acc, cur) => acc + cur)
-        count = calories > count ? calories : count
-    })
+const inputFile = ('day1.input.txt')
+const getObjectsFromFile = (file) => {
+    const rawFile = fs.readFileSync(file, 'utf8')
+    const elfData = rawFile.split('\n\n')
+    // need numbers, not strings :3
+    let elves = elfData.map(elf => elf.split('\n')).map(elf => elf.map(e => Number(e)))
+    return elves
 
-    return count
 }
-console.log(getMostCalories())
+const elves = getObjectsFromFile(inputFile)
+const getMostCaloriesForTopX = (elves, x) => {
+    
+    const reducedSortedElves = elves.map((elf, i) => elf.reduce((acc, cur) => acc + cur)).sort((a, b) => a - b)
+    const topXArray = [];
+    for (x; x > 0; x--) {
+       topXArray.push(reducedSortedElves.pop()) 
+    } 
+    console.log(topXArray)
+    return topXArray.reduce((acc, cur) => acc + cur)
+}
+console.log(getMostCaloriesForTopX(elves, 3))
+
+
+/**
+ *
+ * Get the sum of the top 3 most calories carried
+ *
+ */
+//const reducedElves = getMostCalories(elves)
+//const sortedElves = reducedElves.sort((a, b) => a - b) 
+//const top3 = [sortedElves.pop(), sortedElves.pop(), sortedElves.pop()].reduce((acc, cur) => acc + cur)
+//
+//console.log(top3)
+
+
