@@ -2,13 +2,13 @@ import inputFileHelper from '../utils/input-file-helper.js'
 
 const rawFile = inputFileHelper('day6-input.txt').trim()
 
-const findPacketMarker = (packet) => {
+const findNextUniques = (string, numOfUniques) => {
     let result
-    packet.split('').find((_, i, chars) => {
-        const next4 = chars.slice(i, i + 4)
-        const uniques = [...new Set(next4)]
-        if (uniques.length === 4) {
-            return result = i + 4
+    string.split('').find((_, i, chars) => {
+        const nextX = chars.slice(i, i + numOfUniques)
+        const uniques = [...new Set(nextX)]
+        if (uniques.length === numOfUniques) {
+            return result = i + numOfUniques
         }
         return false
     })
@@ -16,5 +16,5 @@ const findPacketMarker = (packet) => {
 }
 
 
-console.log(findPacketMarker(rawFile))
-
+console.log(findNextUniques(rawFile, 4))
+console.log(findNextUniques(rawFile, 14))
