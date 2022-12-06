@@ -31,9 +31,10 @@ const moveStacks = (stacks, instructions) => {
     const instArr = instructions.trim().split('\n')
     for (let i = 0; i < instArr.length; i++) {
         const [numCrates, start, end] = instArr[i].match(/[\d]+/g)
-        const temp = Array.from({ length: numCrates-1}, (_, i) => i)
-        for (let j = 0; j <= temp.length; j++ ) {
-            stacks[end].unshift(stacks[start].shift())
+        const temp = stacks[start].slice(0, numCrates)
+        stacks[end].unshift(...temp)
+        for (let j = 0; j <= temp.length - 1; j++ ) {
+            stacks[start].shift()
         }
     }
     const result = []
