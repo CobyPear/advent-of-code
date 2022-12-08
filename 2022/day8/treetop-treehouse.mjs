@@ -22,10 +22,10 @@ const treeViewer = (trees) => {
                 const fromLeft = colsArr.slice(0, j)
                 const fromRight = colsArr.slice(j+1, colsArr.length)
                 //console.log(fromLeft,'-----', col, '------',fromRight)
-                const canNotBeSeenFromLeft = fromLeft.find(left => Number(col) <= Number(left))
-                const canNotBeSeenFromRight = fromRight.find(right => Number(col) <= Number(right))
+                const leftTreeTaller = fromLeft.find(left => Number(col) <= Number(left))
+                const rightTreeTaller = fromRight.find(right => Number(col) <= Number(right))
                 //console.log('R', canNotBeSeenFromLeft, 'col', col, 'L', canNotBeSeenFromRight)
-                if (!canNotBeSeenFromLeft || !canNotBeSeenFromRight) {
+                if (!leftTreeTaller || !rightTreeTaller) {
                     console.log('col', col)
                     canBeSeenFromEdge.push(col)
                 }
