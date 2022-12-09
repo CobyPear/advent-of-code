@@ -7,11 +7,14 @@ const exampleInput = `30373
 33549
 35390`
 
+const fromDirectionTaller = (arg, arr) => {
+    return arr.find(x => Number(arg) <= Number(x))
+}
+
 const treeViewer = (trees) => {
     const canBeSeenFromEdge = []
     const rows = trees.split('\n')
     rows.forEach((row, i, rowsArr) => {
-        console.log(i, row)
         row.split('').forEach((col, j, colsArr) => {
             // if it's on the edge it can be seen
             if (j === 0 || j === colsArr.length - 1 || i === 0 || i === rowsArr.length - 1) {
@@ -21,15 +24,20 @@ const treeViewer = (trees) => {
                 // compare current column to neighbors
                 const fromLeft = colsArr.slice(0, j)
                 const fromRight = colsArr.slice(j+1, colsArr.length)
-                //console.log(fromLeft,'-----', col, '------',fromRight)
-                const leftTreeTaller = fromLeft.find(left => Number(col) <= Number(left))
-                const rightTreeTaller = fromRight.find(right => Number(col) <= Number(right))
-                //console.log('R', canNotBeSeenFromLeft, 'col', col, 'L', canNotBeSeenFromRight)
-                if (!leftTreeTaller || !rightTreeTaller) {
-                    console.log('col', col)
+                const fromTop = rows.slice(0, i).map(rowAgain => rowAgain[j])
+                const fromBottom = rows.slice(i+1, rows.length).map(rowAgain => rowAgain[j])
+
+                const leftTreeTaller = fromDirectionTaller(col, fromLeft)
+                const rightTreeTaller = fromDirectionTaller(col, fromRight)
+                const topTreeTaller = fromDirectionTaller(col, fromTop)
+                const bottomTreeTaller = fromDirectionTaller(col, fromBottom)
+                
+                if (!leftTreeTaller ||
+                    !rightTreeTaller ||
+                    !topTreeTaller ||
+                    !bottomTreeTaller) {
                     canBeSeenFromEdge.push(col)
                 }
-
             }
         })
     })
