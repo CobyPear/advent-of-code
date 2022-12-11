@@ -58,9 +58,9 @@ const inputParser = (input) => {
                     const y = c === old ? x : c
                     switch (modifier) {
                         case '+':
-                            return Number(x) + Number(y)
+                            return BigInt(x) + BigInt(y)
                         case '*':
-                            return Number(x) * Number(y) 
+                            return BigInt(x) * BigInt(y) 
                         default:
                             throw 'Something went wrong...'
                     }
@@ -89,7 +89,7 @@ const inputParser = (input) => {
 }
 
 const calculateMonkeyBusiness = (monkeys) => { 
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 1000; i++) {
         Object.keys(monkeys).forEach((key) => {
             const monkey = monkeys[key]
             const startLength = monkey.startingItems.length
@@ -98,13 +98,13 @@ const calculateMonkeyBusiness = (monkeys) => {
                 // perform monkey's operation on the item
                 let newItemLevel = monkey.operation(item)
                 // reduce worry level by /3 rounded down
-                newItemLevel = Math.floor(newItemLevel / 3)
+                // part2: don't
                 // set the new worry level
                 // remove the item from the current array
                 monkey.startingItems.shift()
                 // get the receiving monkey
                 let receivingMonkey
-                if (newItemLevel % monkey.testNum === 0) {
+                if (BigInt(newItemLevel) % BigInt(monkey.testNum) === 0n) {
                     receivingMonkey = monkey.true
                 } else {
                     receivingMonkey = monkey.false
@@ -112,18 +112,19 @@ const calculateMonkeyBusiness = (monkeys) => {
                 // move the item to the new monkey
                 monkeys[receivingMonkey].startingItems.push(newItemLevel)
                 monkey.inspected++
-        }
+            }
     
         })
     }
     const numInspected = Object.values(monkeys).map(({inspected}) => {
         return inspected
     }).sort((a, b) => b - a)
+    console.log(numInspected)
     const result = numInspected[0] * numInspected[1]
     return result
 
 }
 
 console.log(calculateMonkeyBusiness(inputParser(exampleInput)))
-console.log(calculateMonkeyBusiness(inputParser(rawFile)))
+//console.log(calculateMonkeyBusiness(inputParser(rawFile)))
 
