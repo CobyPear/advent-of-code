@@ -46,11 +46,32 @@ const findInterval = (parsedInput) => {
     return safe
 }
 
+const recheckUnsafeRow = (row) => {
+    let possibleCombos = row.length
+    let success = false
+
+    while (possibleCombos !== 0 && success === false) {
+        const removeIndex = possibleCombos - 1
+        const cleaned = row.filter((_, i) => i !== removeIndex)
+        if (findInterval(cleaned) && isIncreasingOrDecreasing(cleaned)) {
+            success = true
+        }
+
+        possibleCombos -= 1
+    }
+
+    return success
+}
+
 const findSafe = (parsedInput) => {
     let result = 0;
     parsedInput.forEach(input => {
         if (findInterval(input) && isIncreasingOrDecreasing(input)) {
             result += 1
+        } else {
+            if (recheckUnsafeRow(input)) {
+                result += 1
+            }
         }
     })
 
